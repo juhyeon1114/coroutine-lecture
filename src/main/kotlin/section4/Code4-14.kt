@@ -1,11 +1,6 @@
 package section4
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.yield
+import kotlinx.coroutines.*
 
 /**
  * 코루틴이 취소를 확인하는 시점
@@ -20,23 +15,23 @@ import kotlinx.coroutines.yield
  * - delay, yield는 코루틴을 일시중단하고, 재개 하는 과정을 거친다. 즉, CoroutineDispatcher에 의해 코루틴이 다시 스레드에 보내지는 과정을 거치기 때문에 비효율적이다.
  */
 fun main() = runBlocking<Unit> {
-    val job1 = launch(Dispatchers.Default) {
-        while (true) {
-            println("작업중1")
+	val job1 = launch(Dispatchers.Default) {
+		while (true) {
+			println("작업중1")
 //            delay(1) // 취소 확인 시점 1
-            yield() // 취소 확인 시점 2
-        }
-    }
-    delay(2)
-    job1.cancel()
+			yield() // 취소 확인 시점 2
+		}
+	}
+	delay(2)
+	job1.cancel()
 
-    val job2 = launch(Dispatchers.Default) {
-        println(this.isActive)
-        while (this.isActive) {
-            println("작업중2")
-        }
-        println(this.isActive)
-    }
-    delay(2)
-    job2.cancel()
+	val job2 = launch(Dispatchers.Default) {
+		println(this.isActive)
+		while (this.isActive) {
+			println("작업중2")
+		}
+		println(this.isActive)
+	}
+	delay(2)
+	job2.cancel()
 }

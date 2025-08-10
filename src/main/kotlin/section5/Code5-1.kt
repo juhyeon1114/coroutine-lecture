@@ -17,10 +17,10 @@ import kotlinx.coroutines.runBlocking
  * - 나머지는 동일
  */
 fun main() = runBlocking<Unit> {
-    val networkDeferred = async(Dispatchers.IO) {
-        delay(1000)
-        return@async "Dummy response"
-    }
-    val result = networkDeferred.await() // 결과값이 반환될 때까지 runBlock을 일시 중단
-    println("Result: $result")
+	val networkDeferred = async(Dispatchers.IO) {
+		delay(1000)
+		return@async "Dummy response"
+	}
+	val result = networkDeferred.await() // 결과값이 반환될 때까지 runBlock을 일시 중단
+	println("Result: $result")
 }

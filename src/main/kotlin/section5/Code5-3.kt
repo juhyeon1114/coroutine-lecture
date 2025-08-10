@@ -11,35 +11,35 @@ import kotlinx.coroutines.*
  * - *주의* async-await과 달리 withContext를 사용하는 것은 새로운 '코루틴'을 만드는 것이 아니라 현재의 코루틴이 실행되는 스레드를 전환하는 것이다.
  */
 fun main() = runBlocking<Unit> {
-    val result = withContext(Dispatchers.IO) {
-        delay(1000)
-        println("[${Thread.currentThread().name}] 결과값 반환")
-        "Result"
-    }
-    println("[${Thread.currentThread().name}] $result")
+	val result = withContext(Dispatchers.IO) {
+		delay(1000)
+		println("[${Thread.currentThread().name}] 결과값 반환")
+		"Result"
+	}
+	println("[${Thread.currentThread().name}] $result")
 
-    // Don't → 병렬처리되지 않음
-    val result1 = withContext(Dispatchers.IO) {
-        delay(1000)
-        "결과1"
-    }
-    val result2 = withContext(Dispatchers.IO) {
-        delay(1000)
-        "결과2"
-    }
-    val results1 = listOf(result1, result2)
-    println(results1)
+	// Don't → 병렬처리되지 않음
+	val result1 = withContext(Dispatchers.IO) {
+		delay(1000)
+		"결과1"
+	}
+	val result2 = withContext(Dispatchers.IO) {
+		delay(1000)
+		"결과2"
+	}
+	val results1 = listOf(result1, result2)
+	println(results1)
 
-    // Do
-    val result3 = async(Dispatchers.IO) {
-        delay(1000)
-        return@async "결과3"
-    }
-    val result4 = async(Dispatchers.IO) {
-        delay(1000)
-        return@async "결과4"
-    }
-    val results2 = awaitAll(result3, result4)
-    println(results2)
+	// Do
+	val result3 = async(Dispatchers.IO) {
+		delay(1000)
+		return@async "결과3"
+	}
+	val result4 = async(Dispatchers.IO) {
+		delay(1000)
+		return@async "결과4"
+	}
+	val results2 = awaitAll(result3, result4)
+	println(results2)
 
 }
